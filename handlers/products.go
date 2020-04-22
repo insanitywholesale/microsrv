@@ -3,10 +3,10 @@ package handlers
 import (
 	"context"
 	"github.com/gorilla/mux"
-	"github.com/insanitywholesale/microsrv/data"
+	//"github.com/insanitywholesale/microsrv/data"
 	"log"
 	"net/http"
-	//"ongoing/microsrv/data" //offline version of github import
+	"microsrv/data" //offline version of github import
 	"strconv"
 )
 

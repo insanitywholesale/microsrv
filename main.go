@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 	"github.com/gorilla/mux"
-	"github.com/insanitywholesale/microsrv/handlers"
+	//"github.com/insanitywholesale/microsrv/handlers"
 	"log"
 	"net/http"
-	//"ongoing/microsrv/handlers" //offline version of github import
+	"microsrv/handlers" //offline version of github import
 	"os"
 	"os/signal"
 	"time"
