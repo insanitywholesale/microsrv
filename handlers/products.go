@@ -5,8 +5,8 @@ import (
 	"github.com/gorilla/mux"
 	//"github.com/insanitywholesale/microsrv/data"
 	"log"
-	"net/http"
 	"microsrv/data" //offline version of github import
+	"net/http"
 	"strconv"
 )
 
