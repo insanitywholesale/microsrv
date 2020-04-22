@@ -13,7 +13,7 @@ type Product struct {
 	ID        int     `json:"id"`
 	Name      string  `json:"name" validate:"required"`
 	Desc      string  `json:"desc"`
-	Price     float32 `json:"price" validate:"gt-0"`
+	Price     float32 `json:"price" validate:"gt=0"`
 	SKU       string  `json:"sku" validate:"required,sku"`
 	CreatedOn string  `json:"-"`
 	UpdatedOn string  `json:"-"`
@@ -33,7 +33,7 @@ func (p *Product) Validate() error {
 func validateSKU(fl validator.FieldLevel) bool {
 	reg := regexp.MustCompile(`cof-[a-z]+`)
 	matches := reg.FindAllString(fl.Field().String(), -1)
-	if len(matches) == 1 {
+	if len(matches) != 1 {
 		return false
 	}
 	return true
