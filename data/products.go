@@ -1,71 +1,102 @@
 package data
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/go-playground/validator"
-	"io"
-	"regexp"
 	"time"
 )
 
 type Product struct {
-	ID        int     `json:"id"`
-	Name      string  `json:"name" validate:"required"`
-	Desc      string  `json:"desc"`
-	Price     float32 `json:"price" validate:"gt=0"`
-	SKU       string  `json:"sku" validate:"required,sku"`
-	CreatedOn string  `json:"-"`
-	UpdatedOn string  `json:"-"`
-	DeletedOn string  `json:"-"`
+	// the id for the coffee
+	//
+	// required: true
+	// min: 1
+	ID int `json:"id"`
+
+	// the name for the coffee
+	//
+	// required: true
+	// max length: 255
+	Name string `json:"name" validate:"required"`
+
+	// the description for the coffee
+	//
+	// required: false
+	// max length: 10000
+	Desc string `json:"desc"`
+
+	// the price for the coffee
+	//
+	// required: true
+	// min: 0.01
+	Price float32 `json:"price" validate:"gt=0"`
+
+	// the SKU for the coffee
+	//
+	// required: true
+	// pattern: cof-[a-z]+
+	SKU string `json:"sku" validate:"required,sku"`
+
+	// entry creation date
+	//
+	// required: false
+	CreatedOn string `json:"-"`
+	// entry last update date
+	//
+	// required: false
+	UpdatedOn string `json:"-"`
+	// entry deletion date
+	//
+	// required: false
+	DeletedOn string `json:"-"`
 }
 
 type Products []*Product
 
 var ErrorProductNotFound = fmt.Errorf("Product Not Found")
 
-func (p *Product) Validate() error {
-	validate := validator.New()
-	validate.RegisterValidation("sku", validateSKU)
-	return validate.Struct(p)
-}
-
-func validateSKU(fl validator.FieldLevel) bool {
-	reg := regexp.MustCompile(`cof-[a-z]+`)
-	matches := reg.FindAllString(fl.Field().String(), -1)
-	if len(matches) != 1 {
-		return false
-	}
-	return true
-}
-
-func (p *Products) ToJSON(w io.Writer) error {
-	err := json.NewEncoder(w)
-	return err.Encode(p)
-}
-
-func (p *Product) FromJSON(r io.Reader) error {
-	err := json.NewDecoder(r)
-	return err.Decode(p)
-}
-
+//returns the list of all the products from the mock data store
 func GetProducts() Products {
 	return productList
 }
 
-func AddProduct(p *Product) {
-	p.ID = getNextID()
-	productList = append(productList, p)
+// GetProductByID returns a single product which matches the id from the
+// database.
+// If a product is not found this function returns a ProductNotFound error
+func GetProductByID(id int) (*Product, error) {
+	idx, err := findIndexByProductID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return productList[idx], nil
 }
 
-func UpdateProduct(id int, p *Product) error {
-	_, pos, err := findProduct(id)
+func AddProduct(p Product) {
+	// get the next id in sequence
+	maxID := productList[len(productList)-1].ID
+	p.ID = maxID + 1
+	productList = append(productList, &p)
+}
+
+func UpdateProduct(p Product) error {
+	idx, err := findIndexByProductID(p.ID)
 	if err != nil {
 		return err
 	}
 
-	p.ID = id
-	productList[pos] = p
+	// update the product in the DB
+	productList[idx] = &p
+	return nil
+}
+
+func DeleteProduct(id int) error {
+	idx, err := findIndexByProductID(id)
+	if err != nil {
+		return err
+	}
+
+	//No idea how this works but it does. I blame slicetricks
+	productList = append(productList[:idx], productList[idx+1:]...)
 	return nil
 }
 
@@ -76,6 +107,17 @@ func findProduct(id int) (*Product, int, error) {
 		}
 	}
 	return nil, -1, ErrorProductNotFound
+}
+
+//finds the index of a product in the database
+//returns -1 and an error if no product is found
+func findIndexByProductID(id int) (int, error) {
+	for i, p := range productList {
+		if p.ID == id {
+			return i, nil
+		}
+	}
+	return -1, ErrorProductNotFound
 }
 
 func getNextID() int {

@@ -1,7 +1,7 @@
-package newhandlers
+package handlers
 
 import (
-	data "microsrv/newdata"
+	"microsrv/data"
 	"net/http"
 )
 
@@ -14,6 +14,7 @@ import (
 
 //Create handles POST requests to add new products
 func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
+	p.l.Printf("[DEBUG]: Handle POST")
 	//Fetch the product from the request context
 	prod := r.Context().Value(KeyProduct{}).(data.Product)
 

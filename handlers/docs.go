@@ -13,7 +13,7 @@
 //	- application/json
 //
 // swagger:meta
-package newhandlers
+package handlers
 
 import (
 	"microsrv/data"

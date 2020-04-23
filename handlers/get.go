@@ -1,7 +1,7 @@
-package newhandlers
+package handlers
 
 import (
-	data "microsrv/newdata"
+	"microsrv/data"
 	"net/http"
 )
 

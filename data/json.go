@@ -1,4 +1,4 @@
-package newdata
+package data
 
 import (
 	"encoding/json"

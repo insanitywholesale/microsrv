@@ -1,8 +1,8 @@
-package newhandlers
+package handlers
 
 import (
 	"context"
-	data "microsrv/newdata"
+	"microsrv/data"
 	"net/http"
 )
 
@@ -10,7 +10,8 @@ func (p Products) MiddlewareValidateProduct(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		prod := data.Product{}
 
-		err := data.FromJSON(prod, r.Body)
+		err := prod.FromJSON(r.Body)
+		//err := data.FromJSON(prod, r.Body) //suggested method but doesn't work
 		if err != nil {
 			p.l.Println("[ERROR]: deserializing product", err)
 
@@ -19,14 +20,14 @@ func (p Products) MiddlewareValidateProduct(next http.Handler) http.Handler {
 			return
 		}
 
-		errs := p.v.Validate(prod)
-		if err != nil {
-			p.l.Println("[ERROR]: validating product", err)
+		err = prod.Validate()
+		//if errs != nil {
+		//	p.l.Println("[ERROR]: validating product", err)
 
-			rw.WriteHeader(http.StatusUnprocessableEntity)
-			data.ToJSON(&ValidationError{Messages: errs.Errors()}, rw)
-			return
-		}
+		//	rw.WriteHeader(http.StatusUnprocessableEntity)
+		//	data.ToJSON(&ValidationError{Messages: errs.Errors()}, rw)
+		//	return
+		//}
 
 		//add the procuct to the context
 		ctx := context.WithValue(r.Context(), KeyProduct{}, prod)

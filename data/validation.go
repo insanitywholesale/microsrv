@@ -1,4 +1,4 @@
-package newdata
+package data
 
 import (
 	"fmt"
@@ -64,7 +64,7 @@ func NewValidation() *Validation {
 //			fmt.Println(ve.Param())
 //			fmt.Println()
 //	}
-func (v *Validation) Validate(i interface{}) ValidationErrors {
+func (v *Validation) ValidateWRONG(i interface{}) ValidationErrors {
 	errs := v.validate.Struct(i).(validator.ValidationErrors)
 
 	if len(errs) == 0 {
@@ -82,7 +82,7 @@ func (v *Validation) Validate(i interface{}) ValidationErrors {
 }
 
 // validateSKU
-func validateSKU(fl validator.FieldLevel) bool {
+func validateSKUWRONG(fl validator.FieldLevel) bool {
 	// SKU must be in the format abc-abc-abc
 	re := regexp.MustCompile(`[a-z]+-[a-z]+-[a-z]+`)
 	sku := re.FindAllString(fl.Field().String(), -1)
