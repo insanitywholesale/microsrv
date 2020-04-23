@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"log"
+	"microsrv/data"
 	"net/http"
 	"strconv"
-	"microsrv/data"
 )
 
 type Products struct {

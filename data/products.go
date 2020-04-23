@@ -127,7 +127,7 @@ func getNextID() int {
 
 var productList = []*Product{
 	&Product{
-		ID:        1,
+		ID:        0,
 		Name:      "Espresso",
 		Desc:      "Strong no milk",
 		Price:     1.4,
@@ -136,7 +136,7 @@ var productList = []*Product{
 		UpdatedOn: time.Now().UTC().String(),
 	},
 	&Product{
-		ID:        2,
+		ID:        1,
 		Name:      "Latte",
 		Desc:      "Frothy and milky",
 		Price:     1.6,
@@ -145,11 +145,20 @@ var productList = []*Product{
 		UpdatedOn: time.Now().UTC().String(),
 	},
 	&Product{
-		ID:        3,
+		ID:        2,
 		Name:      "Nescafe",
 		Desc:      "Standard stuff",
 		Price:     1.2,
 		SKU:       "cof-nescafe",
+		CreatedOn: time.Now().UTC().String(),
+		UpdatedOn: time.Now().UTC().String(),
+	},
+	&Product{
+		ID:        3,
+		Name:      "Starbucks",
+		Desc:      "Barely coffee",
+		Price:     5.5,
+		SKU:       "cof-dontbuy",
 		CreatedOn: time.Now().UTC().String(),
 		UpdatedOn: time.Now().UTC().String(),
 	},

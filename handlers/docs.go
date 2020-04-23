@@ -3,7 +3,7 @@
 // Documentation for Product API
 //
 //	Schemes: http
-//	BasePath: /products
+//	BasePath: /
 //	Version: 0.0.1
 //
 //	Consumes:
@@ -60,18 +60,18 @@ type productResponseWrapper struct {
 type noContentResponseWrapper struct {
 }
 
-// swagger:parameters updateProduct addProduct
+// swagger:parameters addProduct deleteProduct
 type productParamsWrapper struct {
-	// Product data structure to Update or Create.
+	// Product data structure to Update or Add.
 	// Note: the id field is ignored by update and create operations
 	// in: body
 	// required: true
 	Body data.Product
 }
 
-// swagger:parameters updateProduct
+// swagger:parameters deleteProduct getProduct
 type productIDParamsWrapper struct {
-	// The id of the product for which the operation relates
+	// The id of the product that is operated on
 	// in: path
 	// required: true
 	ID int `json:"id"`

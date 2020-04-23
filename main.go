@@ -5,8 +5,8 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
 	"log"
-	"microsrv/handlers"
 	"microsrv/data"
+	"microsrv/handlers"
 	"net/http"
 	"os"
 	"os/signal"
@@ -14,11 +14,11 @@ import (
 )
 
 func main() {
-	l := log.New(os.Stdout, "products-api: ", log.LstdFlags)   //logger to be used for the products api
+	l := log.New(os.Stdout, "products-api: ", log.LstdFlags) //logger to be used for the products api
 	v := data.NewValidation()
 	redocOpts := middleware.RedocOpts{SpecURL: "/swagger.yml"} //Redoc option to use YAML instead of JSON
 
-	ph := handlers.NewProducts(l, v)          //Product handler
+	ph := handlers.NewProducts(l, v)       //Product handler
 	sh := middleware.Redoc(redocOpts, nil) //Swagger handler
 
 	//responseweriter and request get passed automatically to the function in HandleFunc

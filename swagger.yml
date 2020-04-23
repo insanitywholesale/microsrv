@@ -1,16 +1,19 @@
-basePath: /products
+basePath: /
 consumes:
 - application/json
 definitions:
   GenericError:
-    description: GenericError is a generic error message returned by the server
+    description: GenericError GenericError is a generic error message returned by
+      the server
     properties:
       message:
+        description: message
         type: string
         x-go-name: Message
     type: object
-    x-go-package: microsrv/handlers
+    x-go-package: microsrv/client/models
   Product:
+    description: Product product
     properties:
       desc:
         description: the description for the coffee
@@ -45,17 +48,19 @@ definitions:
     - price
     - sku
     type: object
-    x-go-package: microsrv/data
+    x-go-package: microsrv/client/models
   ValidationError:
-    description: ValidationError is a collection of validation error messages
+    description: ValidationError ValidationError is a collection of validation error
+      messages
     properties:
       messages:
+        description: messages
         items:
           type: string
         type: array
         x-go-name: Messages
     type: object
-    x-go-package: microsrv/handlers
+    x-go-package: microsrv/client/models
 info:
   description: Documentation for Product API
   title: of Product API
@@ -75,7 +80,7 @@ paths:
       operationId: addProduct
       parameters:
       - description: |-
-          Product data structure to Update or Create.
+          Product data structure to Update or Add.
           Note: the id field is ignored by update and create operations
         in: body
         name: Body
@@ -91,10 +96,38 @@ paths:
           $ref: '#/responses/errorResponse'
       tags:
       - products
+    put:
+      description: Replaces one product
+      operationId: updateProduct
+      responses:
+        "201":
+          $ref: '#/responses/noContentResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+        "422":
+          $ref: '#/responses/errorValidation'
+      tags:
+      - products
   /products/{id}:
     delete:
       description: Update a products details
       operationId: deleteProduct
+      parameters:
+      - description: |-
+          Product data structure to Update or Add.
+          Note: the id field is ignored by update and create operations
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/Product'
+      - description: The id of the product that is operated on
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+        x-go-name: ID
       responses:
         "201":
           $ref: '#/responses/noContentResponse'
@@ -107,26 +140,8 @@ paths:
     get:
       description: Return a single product from the data store
       operationId: getProduct
-      responses:
-        "200":
-          $ref: '#/responses/productResponse'
-        "404":
-          $ref: '#/responses/errorResponse'
-      tags:
-      - products
-    put:
-      description: Replaces one product
-      operationId: updateProduct
       parameters:
-      - description: |-
-          Product data structure to Update or Create.
-          Note: the id field is ignored by update and create operations
-        in: body
-        name: Body
-        required: true
-        schema:
-          $ref: '#/definitions/Product'
-      - description: The id of the product for which the operation relates
+      - description: The id of the product that is operated on
         format: int64
         in: path
         name: id
@@ -134,12 +149,10 @@ paths:
         type: integer
         x-go-name: ID
       responses:
-        "201":
-          $ref: '#/responses/noContentResponse'
+        "200":
+          $ref: '#/responses/productResponse'
         "404":
           $ref: '#/responses/errorResponse'
-        "422":
-          $ref: '#/responses/errorValidation'
       tags:
       - products
 produces:
