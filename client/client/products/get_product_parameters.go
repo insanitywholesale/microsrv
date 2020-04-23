@@ -15,6 +15,8 @@ import (
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+
+	"microsrv/client/models"
 )
 
 // NewGetProductParams creates a new GetProductParams object
@@ -61,6 +63,12 @@ for the get product operation typically these are written to a http.Request
 */
 type GetProductParams struct {
 
+	/*Body
+	  Product data structure to Update or Add.
+	Note: the id field is ignored by update and create operations
+
+	*/
+	Body *models.Product
 	/*ID
 	  The id of the product that is operated on
 
@@ -105,6 +113,17 @@ func (o *GetProductParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithBody adds the body to the get product params
+func (o *GetProductParams) WithBody(body *models.Product) *GetProductParams {
+	o.SetBody(body)
+	return o
+}
+
+// SetBody adds the body to the get product params
+func (o *GetProductParams) SetBody(body *models.Product) {
+	o.Body = body
+}
+
 // WithID adds the id to the get product params
 func (o *GetProductParams) WithID(id int64) *GetProductParams {
 	o.SetID(id)
@@ -123,6 +142,12 @@ func (o *GetProductParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Re
 		return err
 	}
 	var res []error
+
+	if o.Body != nil {
+		if err := r.SetBodyParam(o.Body); err != nil {
+			return err
+		}
+	}
 
 	// path param id
 	if err := r.SetPathParam("id", swag.FormatInt64(o.ID)); err != nil {

@@ -13,7 +13,7 @@ import (
 	"microsrv/client/client/products"
 )
 
-// Default product client HTTP client.
+// Default client HTTP client.
 var Default = NewHTTPClient(nil)
 
 const (
@@ -28,14 +28,14 @@ const (
 // DefaultSchemes are the default schemes found in Meta (info) section of spec file
 var DefaultSchemes = []string{"http"}
 
-// NewHTTPClient creates a new product client HTTP client.
-func NewHTTPClient(formats strfmt.Registry) *ProductClient {
+// NewHTTPClient creates a new client HTTP client.
+func NewHTTPClient(formats strfmt.Registry) *Client {
 	return NewHTTPClientWithConfig(formats, nil)
 }
 
-// NewHTTPClientWithConfig creates a new product client HTTP client,
+// NewHTTPClientWithConfig creates a new client HTTP client,
 // using a customizable transport config.
-func NewHTTPClientWithConfig(formats strfmt.Registry, cfg *TransportConfig) *ProductClient {
+func NewHTTPClientWithConfig(formats strfmt.Registry, cfg *TransportConfig) *Client {
 	// ensure nullable parameters have default
 	if cfg == nil {
 		cfg = DefaultTransportConfig()
@@ -46,14 +46,14 @@ func NewHTTPClientWithConfig(formats strfmt.Registry, cfg *TransportConfig) *Pro
 	return New(transport, formats)
 }
 
-// New creates a new product client client
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *ProductClient {
+// New creates a new client client
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
 	// ensure nullable parameters have default
 	if formats == nil {
 		formats = strfmt.Default
 	}
 
-	cli := new(ProductClient)
+	cli := new(Client)
 	cli.Transport = transport
 	cli.Products = products.New(transport, formats)
 	return cli
@@ -98,15 +98,15 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 	return cfg
 }
 
-// ProductClient is a client for product client
-type ProductClient struct {
+// Client is a client for client
+type Client struct {
 	Products products.ClientService
 
 	Transport runtime.ClientTransport
 }
 
 // SetTransport changes the transport on the client and all its subresources
-func (c *ProductClient) SetTransport(transport runtime.ClientTransport) {
+func (c *Client) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
 	c.Products.SetTransport(transport)
 }
