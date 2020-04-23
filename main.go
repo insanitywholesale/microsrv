@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	handlers "microsrv/newhandlers"
+	data "microsrv/newdata"
 	"net/http"
 	"os"
 	"os/signal"
@@ -14,9 +15,10 @@ import (
 
 func main() {
 	l := log.New(os.Stdout, "products-api: ", log.LstdFlags)   //logger to be used for the products api
+	v := data.NewValidation()
 	redocOpts := middleware.RedocOpts{SpecURL: "/swagger.yml"} //Redoc option to use YAML instead of JSON
 
-	ph := handlers.NewProducts(l)          //Product handler
+	ph := handlers.NewProducts(l, v)          //Product handler
 	sh := middleware.Redoc(redocOpts, nil) //Swagger handler
 
 	//responseweriter and request get passed automatically to the function in HandleFunc
