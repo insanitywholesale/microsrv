@@ -1,6 +1,46 @@
-basePath: /
+basePath: /products
 consumes:
 - application/json
+definitions:
+  GenericError:
+    description: GenericError is a generic error message returned by the server
+    properties:
+      message:
+        type: string
+        x-go-name: Message
+    type: object
+    x-go-package: microsrv/newhandlers
+  Product:
+    properties:
+      desc:
+        type: string
+        x-go-name: Desc
+      id:
+        format: int64
+        type: integer
+        x-go-name: ID
+      name:
+        type: string
+        x-go-name: Name
+      price:
+        format: float
+        type: number
+        x-go-name: Price
+      sku:
+        type: string
+        x-go-name: SKU
+    type: object
+    x-go-package: microsrv/data
+  ValidationError:
+    description: ValidationError is a collection of validation error messages
+    properties:
+      messages:
+        items:
+          type: string
+        type: array
+        x-go-name: Messages
+    type: object
+    x-go-package: microsrv/newhandlers
 info:
   description: Documentation for Product API
   title: of Product API
@@ -18,6 +58,15 @@ paths:
     post:
       description: Create a new product
       operationId: addProduct
+      parameters:
+      - description: |-
+          Product data structure to Update or Create.
+          Note: the id field is ignored by update and create operations
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/Product'
       responses:
         "200":
           $ref: '#/responses/productResponse'
@@ -53,6 +102,22 @@ paths:
     put:
       description: Replaces one product
       operationId: updateProduct
+      parameters:
+      - description: |-
+          Product data structure to Update or Create.
+          Note: the id field is ignored by update and create operations
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/Product'
+      - description: The id of the product for which the operation relates
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+        x-go-name: ID
       responses:
         "201":
           $ref: '#/responses/noContentResponse'
@@ -64,6 +129,27 @@ paths:
       - products
 produces:
 - application/json
+responses:
+  errorResponse:
+    description: Generic error message returned as a string
+    schema:
+      $ref: '#/definitions/GenericError'
+  errorValidation:
+    description: Validation errors defined as an array of strings
+    schema:
+      $ref: '#/definitions/ValidationError'
+  noContentResponse:
+    description: No content is returned by this API endpoint
+  productResponse:
+    description: Data structure representing a single product
+    schema:
+      $ref: '#/definitions/Product'
+  productsResponse:
+    description: A list of products
+    schema:
+      items:
+        $ref: '#/definitions/Product'
+      type: array
 schemes:
 - http
 swagger: "2.0"

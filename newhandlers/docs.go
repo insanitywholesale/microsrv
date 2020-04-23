@@ -3,7 +3,7 @@
 // Documentation for Product API
 //
 //	Schemes: http
-//	BasePath: /
+//	BasePath: /products
 //	Version: 0.0.1
 //
 //	Consumes:
