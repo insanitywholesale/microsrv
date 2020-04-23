@@ -9,26 +9,41 @@ definitions:
         type: string
         x-go-name: Message
     type: object
-    x-go-package: microsrv/newhandlers
+    x-go-package: microsrv/handlers
   Product:
     properties:
       desc:
+        description: the description for the coffee
+        maxLength: 10000
         type: string
         x-go-name: Desc
       id:
+        description: the id for the coffee
         format: int64
+        minimum: 1
         type: integer
         x-go-name: ID
       name:
+        description: the name for the coffee
+        maxLength: 255
         type: string
         x-go-name: Name
       price:
+        description: the price for the coffee
         format: float
+        minimum: 0.01
         type: number
         x-go-name: Price
       sku:
+        description: the SKU for the coffee
+        pattern: cof-[a-z]+
         type: string
         x-go-name: SKU
+    required:
+    - id
+    - name
+    - price
+    - sku
     type: object
     x-go-package: microsrv/data
   ValidationError:
@@ -40,7 +55,7 @@ definitions:
         type: array
         x-go-name: Messages
     type: object
-    x-go-package: microsrv/newhandlers
+    x-go-package: microsrv/handlers
 info:
   description: Documentation for Product API
   title: of Product API
