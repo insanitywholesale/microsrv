@@ -2,11 +2,10 @@ package main
 
 import (
 	"context"
-	"github.com/gorilla/mux"
-	//"github.com/insanitywholesale/microsrv/handlers"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/gorilla/mux"
 	"log"
-	handlers "microsrv/newhandlers" //offline version of github import
+	handlers "microsrv/newhandlers"
 	"net/http"
 	"os"
 	"os/signal"
@@ -20,23 +19,26 @@ func main() {
 	ph := handlers.NewProducts(l)          //Product handler
 	sh := middleware.Redoc(redocOpts, nil) //Swagger handler
 
-	sm := mux.NewRouter()                               //Gorilla ServeMux aka root Router
-	getRouter := sm.Methods(http.MethodGet).Subrouter() //Add a SubRouter to the root Router
-	getRouter.HandleFunc("/", ph.GetProducts)           //(responsewriter and request are passed automatically)
+	//responseweriter and request get passed automatically to the function in HandleFunc
+	sm := mux.NewRouter()                                        //Gorilla ServeMux aka root Router
+	getRouter := sm.Methods(http.MethodGet).Subrouter()          //Add a SubRouter to the root Router
+	getRouter.HandleFunc("/products", ph.GetProducts)            //Assign function to path
+	getRouter.HandleFunc("/products/{id:[0-9]+}", ph.GetProduct) //Assing function to path
 
 	getRouter.Handle("/docs", sh)                                     //Handle the /docs path on GET requests
 	getRouter.Handle("/swagger.yml", http.FileServer(http.Dir("./"))) //Serve swagger.yml
 
 	postRouter := sm.Methods(http.MethodPost).Subrouter() //Add another Subrouter to the root Router
-	postRouter.HandleFunc("/", ph.AddProduct)             //(responsewriter and request are passed automatically)
+	postRouter.HandleFunc("/products", ph.AddProduct)     //Assign function to endpoint
 	postRouter.Use(ph.MiddlewareValidateProduct)          //Middleware to validate json structure
 
-	putRouter := sm.Methods(http.MethodPut).Subrouter()    //Add another Subrouter to the root Router
-	putRouter.HandleFunc("/{id:[0-9]+}", ph.UpdateProduct) //(responsewriter and request are passed automatically)
-	putRouter.Use(ph.MiddlewareValidateProduct)            //Middleware to validate json structure
+	putRouter := sm.Methods(http.MethodPut).Subrouter() //Add another Subrouter to the root Router
+	putRouter.HandleFunc("/products", ph.UpdateProduct) //Assign function to path
+	putRouter.Use(ph.MiddlewareValidateProduct)         //Middleware to validate json structure
 
-	deleteRouter := sm.Methods(http.MethodDelete).Subrouter() //Add another Subrouter to the root Router
-	deleteRouter.HandleFunc("/{id:[0-9]+}", ph.DeleteProduct) //responsewriter and request are passed automatically
+	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()          //Add another Subrouter to the root Router
+	deleteRouter.HandleFunc("/products/{id:[0-9]+}", ph.DeleteProduct) //Assign function to path
+
 	s := &http.Server{
 		Addr:         ":9090",
 		Handler:      sm,

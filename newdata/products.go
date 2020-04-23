@@ -20,33 +20,49 @@ type Products []*Product
 
 var ErrorProductNotFound = fmt.Errorf("Product Not Found")
 
+//returns the list of all the products from the mock data store
 func GetProducts() Products {
 	return productList
 }
 
-func AddProduct(p *Product) {
-	p.ID = getNextID()
-	productList = append(productList, p)
+// GetProductByID returns a single product which matches the id from the
+// database.
+// If a product is not found this function returns a ProductNotFound error
+func GetProductByID(id int) (*Product, error) {
+	idx, err := findIndexByProductID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return productList[idx], nil
 }
 
-func UpdateProduct(id int, p *Product) error {
-	_, pos, err := findProduct(id)
+func AddProduct(p Product) {
+	// get the next id in sequence
+	maxID := productList[len(productList)-1].ID
+	p.ID = maxID + 1
+	productList = append(productList, &p)
+}
+
+func UpdateProduct(p Product) error {
+	idx, err := findIndexByProductID(p.ID)
 	if err != nil {
 		return err
 	}
 
-	p.ID = id
-	productList[pos] = p
+	// update the product in the DB
+	productList[idx] = &p
 	return nil
 }
 
 func DeleteProduct(id int) error {
-	_, pos, err := findProduct(id)
+	idx, err := findIndexByProductID(id)
 	if err != nil {
 		return err
 	}
 
-	productList = append(productList[:pos], productList[pos+1:]...)
+	//No idea how this works but it does. I blame slicetricks
+	productList = append(productList[:idx], productList[idx+1:]...)
 	return nil
 }
 
@@ -60,14 +76,14 @@ func findProduct(id int) (*Product, int, error) {
 }
 
 //finds the index of a product in the database
-//returns -1 when no product can be found
-func findIndexByProductID(id int) int {
+//returns -1 and an error if no product is found
+func findIndexByProductID(id int) (int, error) {
 	for i, p := range productList {
 		if p.ID == id {
-			return i
+			return i, nil
 		}
 	}
-	return -1
+	return -1, ErrorProductNotFound
 }
 
 func getNextID() int {

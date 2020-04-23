@@ -5,9 +5,26 @@ import (
 	"net/http"
 )
 
-func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
-	p.l.Println("Handle POST Product")
+// swagger:route POST /products products addProduct
+// Create a new product
+// responses:
+//	200: productResponse
+//  422: errorValidation
+//  501: errorResponse
 
+//Create handles POST requests to add new products
+func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
+	//Fetch the product from the request context
 	prod := r.Context().Value(KeyProduct{}).(data.Product)
-	data.AddProduct(&prod)
+
+	p.l.Printf("[DEBUG]: Inserting product: %#v\n", prod)
+	data.AddProduct(prod)
 }
+
+//Old method for adding a new product
+//func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
+//	p.l.Println("Handle POST Product")
+//
+//	prod := r.Context().Value(KeyProduct{}).(data.Product)
+//	data.AddProduct(prod)
+//}
