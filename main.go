@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
+	gohandlers "github.com/gorilla/handlers"
 	"log"
 	"microsrv/data"
 	"microsrv/handlers"
@@ -20,6 +21,7 @@ func main() {
 
 	ph := handlers.NewProducts(l, v)       //Product handler
 	sh := middleware.Redoc(redocOpts, nil) //Swagger handler
+	ch := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"})) //CORS handler
 
 	//responseweriter and request get passed automatically to the function in HandleFunc
 	sm := mux.NewRouter()                                        //Gorilla ServeMux aka root Router
@@ -43,7 +45,7 @@ func main() {
 
 	s := &http.Server{
 		Addr:         ":9090",
-		Handler:      sm,
+		Handler:      ch(sm),
 		IdleTimeout:  100 * time.Second,
 		ReadTimeout:  1 * time.Second,
 		WriteTimeout: 1 * time.Second,
