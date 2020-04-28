@@ -20,7 +20,7 @@ func TestClient(t *testing.T) {
 	prodsParams := products.NewGetProductsParams()
 	prods, errs := c.Products.GetProducts(prodsParams)
 	if errs != nil {
-		t.Fatal(err)
+		t.Fatal(errs)
 	}
 
 	fmt.Println(prod)
@@ -34,5 +34,5 @@ func TestClient(t *testing.T) {
 	//Aka if you actually want to test
 	//Lmao
 	//Nobody tests
-	t.Fail()
+	//t.Fail()
 }
