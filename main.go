@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/gorilla/mux"
 	gohandlers "github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 	"log"
 	"microsrv/data"
 	"microsrv/handlers"
@@ -19,8 +19,8 @@ func main() {
 	v := data.NewValidation()
 	redocOpts := middleware.RedocOpts{SpecURL: "/swagger.yml"} //Redoc option to use YAML instead of JSON
 
-	ph := handlers.NewProducts(l, v)       //Product handler
-	sh := middleware.Redoc(redocOpts, nil) //Swagger handler
+	ph := handlers.NewProducts(l, v)                                //Product handler
+	sh := middleware.Redoc(redocOpts, nil)                          //Swagger handler
 	ch := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"})) //CORS handler
 
 	//responseweriter and request get passed automatically to the function in HandleFunc
