@@ -2,17 +2,16 @@ package main
 
 import (
 	"context"
-	"net/http"
-	"os"
-	"os/signal"
-	"time"
-
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	hclog "github.com/hashicorp/go-hclog"
 	"github.com/nicholasjackson/env"
 	"microsrv/imagesrv/files"
 	"microsrv/imagesrv/handlers"
+	"net/http"
+	"os"
+	"os/signal"
+	"time"
 )
 
 var bindAddress = env.String("BIND_ADDRESS", false, ":9091", "Bind address for the server")
