@@ -13,9 +13,13 @@ func main() {
 		URL = "http://localhost"
 	}
 
-	_, err := http.Get(URL)
-	fmt.Println("getting", URL)
+	fmt.Println("getting:", URL)
+	r, err := http.Get(URL)
 	if err != nil {
+		os.Exit(1)
+	}
+	fmt.Println("status code:", r.StatusCode)
+	if r.StatusCode != 200 {
 		os.Exit(1)
 	}
 	fmt.Println("exit status 0")
