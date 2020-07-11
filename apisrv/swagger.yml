@@ -4,16 +4,16 @@ consumes:
 definitions:
   GenericError:
     description: GenericError GenericError GenericError GenericError GenericError
-      is a generic error message returned by the server
+      GenericError GenericError is a generic error message returned by the server
     properties:
       message:
         description: message
         type: string
         x-go-name: Message
     type: object
-    x-go-package: microsrv/client/models
+    x-go-package: microsrv/apisrv/client/models
   Product:
-    description: Product Product Product Product product
+    description: Product Product Product Product Product Product product
     properties:
       desc:
         description: the description for the coffee
@@ -48,10 +48,10 @@ definitions:
     - price
     - sku
     type: object
-    x-go-package: microsrv/client/models
+    x-go-package: microsrv/apisrv/client/models
   ValidationError:
     description: ValidationError ValidationError ValidationError ValidationError ValidationError
-      is a collection of validation error messages
+      ValidationError ValidationError is a collection of validation error messages
     properties:
       messages:
         description: messages
@@ -60,7 +60,7 @@ definitions:
         type: array
         x-go-name: Messages
     type: object
-    x-go-package: microsrv/client/models
+    x-go-package: microsrv/apisrv/client/models
 info:
   description: Documentation for Product API
   title: of Product API

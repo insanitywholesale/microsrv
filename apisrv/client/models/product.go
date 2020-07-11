@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/validate"
 )
 
-// Product Product Product Product Product product
+// Product Product Product Product Product Product Product product
 //
 // swagger:model Product
 type Product struct {
