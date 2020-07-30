@@ -29,6 +29,7 @@ func main() {
 	getRouter.HandleFunc("/products", ph.GetProducts)            //Assign function to path
 	getRouter.HandleFunc("/products/", ph.GetProducts)            //Assign function to path
 	getRouter.HandleFunc("/products/{id:[0-9]+}", ph.GetProduct) //Assing function to path
+	getRouter.HandleFunc("/products/{id:[0-9]+}/", ph.GetProduct) //Assing function to path
 
 	getRouter.Handle("/docs", sh)                                     //Handle the /docs path on GET requests
 	getRouter.Handle("/swagger.yml", http.FileServer(http.Dir("./"))) //Serve swagger.yml so the above works
