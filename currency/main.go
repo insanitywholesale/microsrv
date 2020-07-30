@@ -13,7 +13,9 @@ import (
 func main() {
 	l := hclog.Default()
 
+	// grpc server
 	gs := grpc.NewServer()
+	// currency server
 	cs := server.NewCurrency(l)
 
 	protos.RegisterCurrencyServer(gs, cs)
@@ -22,7 +24,7 @@ func main() {
 
 	log, err := net.Listen("tcp", ":9092")
 	if err != nil {
-		l.Error("[ERROR]", err)
+		l.Error("Unable to listen", "error", err)
 		os.Exit(1)
 	}
 	gs.Serve(log)
