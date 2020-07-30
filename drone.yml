@@ -5,5 +5,5 @@ steps:
   - name: microsrv
     image: golang
     commands:
-    - go get
-    - go build
+      - go get
+      - go build
