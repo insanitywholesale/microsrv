@@ -1,3 +1,6 @@
+.PHONY:
+	go install -v
+
 all:
 	go build -v
 install:
