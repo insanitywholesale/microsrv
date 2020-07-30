@@ -2,8 +2,8 @@ kind: pipeline
 name: default
 
 steps:
-- name: microsrv
-  image: golang
-  commands:
-  - go get -v ./...
-  - go build
+  - name: microsrv
+    image: golang
+    commands:
+    - go get ./...
+    - go install
