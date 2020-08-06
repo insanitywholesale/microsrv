@@ -2,7 +2,7 @@
 
 coffee-related api microservice
 
-
+[![Build Status](http://drone.kates.test/api/badges/inherently/microsrv/status.svg)](http://drone.kates.test/inherently/microsrv)
 
 ## Description
 
