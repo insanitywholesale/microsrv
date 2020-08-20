@@ -1,5 +1,5 @@
 # build
-FROM golang as build
+FROM golang:1.14 as build
 WORKDIR /go/src/microsrv
 COPY . .
 WORKDIR /go/src/microsrv/apisrv
