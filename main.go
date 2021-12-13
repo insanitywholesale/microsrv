@@ -24,11 +24,11 @@ func main() {
 	ch := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"})) //CORS handler
 
 	//responseweriter and request get passed automatically to the function in HandleFunc
-	sm := mux.NewRouter()                                        //Gorilla ServeMux aka root Router
-	getRouter := sm.Methods(http.MethodGet).Subrouter()          //Add a SubRouter to the root Router
-	getRouter.HandleFunc("/products", ph.GetProducts)            //Assign function to path
+	sm := mux.NewRouter()                                         //Gorilla ServeMux aka root Router
+	getRouter := sm.Methods(http.MethodGet).Subrouter()           //Add a SubRouter to the root Router
+	getRouter.HandleFunc("/products", ph.GetProducts)             //Assign function to path
 	getRouter.HandleFunc("/products/", ph.GetProducts)            //Assign function to path
-	getRouter.HandleFunc("/products/{id:[0-9]+}", ph.GetProduct) //Assing function to path
+	getRouter.HandleFunc("/products/{id:[0-9]+}", ph.GetProduct)  //Assing function to path
 	getRouter.HandleFunc("/products/{id:[0-9]+}/", ph.GetProduct) //Assing function to path
 
 	getRouter.Handle("/docs", sh)                                     //Handle the /docs path on GET requests
